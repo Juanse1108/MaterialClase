@@ -8,35 +8,110 @@ from waitress import serve
 app=Flask(__name__)
 cors = CORS(app)
 
-@app.route("/test-G41/<string:cedula>",methods=['GET'])
-def testMethoGet(cedula):
-    variableRespuesta = {
-        "respuesta": "TestGET",
-        "cedula":cedula
-    }
-    return variableRespuesta
+from Controladores.ControladorEstudiante import ControladorEstudiante
+from Controladores.ControladorDepartamento import ControladorDepartamento
+from Controladores.ControladorMateria import ControladorMateria
+from Controladores.ControladorInscripcion import ControladorInscripcion
+miControladorEstudiante=ControladorEstudiante()
+miControladorDepartamento=ControladorDepartamento()
+miControladorMateria=ControladorMateria()
+miControladorInscripcion=ControladorInscripcion()
 
-@app.route("/test-G41",methods=['POST'])
-def testMethoPost():
-    variableRespuesta = {
-        "respuesta": "TestPOST"
-    }
-    return variableRespuesta
-
-@app.route("/test-G41",methods=['PUT'])
-def testMethoPut():
-    variableRespuesta = {
-        "respuesta": "TestPUT"
-    }
-    return variableRespuesta
-
-@app.route("/test-G41",methods=['DELETE'])
-def testMethoDelete():
-    variableRespuesta = {
-        "respuesta": "TestDELETE"
-    }
-    return variableRespuesta
-
+#rutas estudiante
+@app.route("/estudiantes",methods=['GET'])
+def getEstudiantes():
+    json=miControladorEstudiante.index()
+    return jsonify(json)
+@app.route("/estudiantes",methods=['POST'])
+def crearEstudiante():
+    data = request.get_json()
+    json=miControladorEstudiante.create(data)
+    return jsonify(json)
+@app.route("/estudiantes/<string:id>",methods=['GET'])
+def getEstudiante(id):
+    json=miControladorEstudiante.show(id)
+    return jsonify(json)
+@app.route("/estudiantes/<string:id>",methods=['PUT'])
+def modificarEstudiante(id):
+    data = request.get_json()
+    json=miControladorEstudiante.update(id,data)
+    return jsonify(json)
+@app.route("/estudiantes/<string:id>",methods=['DELETE'])
+def eliminarEstudiante(id):
+    json=miControladorEstudiante.delete(id)
+    return jsonify(json)
+#=============================================================
+#rutas departamento
+@app.route("/departamentos",methods=['GET'])
+def getDepartamentos():
+    json=miControladorDepartamento.index()
+    return jsonify(json)
+@app.route("/departamentos",methods=['POST'])
+def crearDepartamento():
+    data = request.get_json()
+    json=miControladorDepartamento.create(data)
+    return jsonify(json)
+@app.route("/departamentos/<string:id>",methods=['GET'])
+def getDepartamento(id):
+    json=miControladorDepartamento.show(id)
+    return jsonify(json)
+@app.route("/departamentos/<string:id>",methods=['PUT'])
+def modificarDepartamento(id):
+    data = request.get_json()
+    json=miControladorDepartamento.update(id,data)
+    return jsonify(json)
+@app.route("/departamentos/<string:id>",methods=['DELETE'])
+def eliminarDepartamento(id):
+    json=miControladorDepartamento.delete(id)
+    return jsonify(json)
+#=============================================================
+#Rutas materia
+@app.route("/materias",methods=['GET'])
+def getMaterias():
+    json=miControladorMateria.index()
+    return jsonify(json)
+@app.route("/materias",methods=['POST'])
+def crearMateria():
+    data = request.get_json()
+    json=miControladorMateria.create(data)
+    return jsonify(json)
+@app.route("/materias/<string:id>",methods=['GET'])
+def getMateria(id):
+    json=miControladorMateria.show(id)
+    return jsonify(json)
+@app.route("/materias/<string:id>",methods=['PUT'])
+def modificarMateria(id):
+    data = request.get_json()
+    json=miControladorMateria.update(id,data)
+    return jsonify(json)
+@app.route("/materias/<string:id>",methods=['DELETE'])
+def eliminarMateria(id):
+    json=miControladorMateria.delete(id)
+    return jsonify(json)
+#=========================================================
+#Rutas Inscripcion
+@app.route("/inscripciones",methods=['GET'])
+def getInscripciones():
+    json=miControladorInscripcion.index()
+    return jsonify(json)
+@app.route("/inscripciones",methods=['POST'])
+def crearInscripcion():
+    data = request.get_json()
+    json=miControladorInscripcion.create(data)
+    return jsonify(json)
+@app.route("/inscripciones/<string:id>",methods=['GET'])
+def getInscripcion(id):
+    json=miControladorInscripcion.show(id)
+    return jsonify(json)
+@app.route("/inscripciones/<string:id>",methods=['PUT'])
+def modificarInscripcion(id):
+    data = request.get_json()
+    json=miControladorInscripcion.update(id,data)
+    return jsonify(json)
+@app.route("/inscripciones/<string:id>",methods=['DELETE'])
+def eliminarInscripcion(id):
+    json=miControladorInscripcion.delete(id)
+    return jsonify(json)
 def loadFileConfig():
     with open('config.json') as f:
         data = json.load(f)
