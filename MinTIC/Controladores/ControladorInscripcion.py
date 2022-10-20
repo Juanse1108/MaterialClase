@@ -1,37 +1,29 @@
 from Modelos.Inscripcion import Inscripcion
+from Repositorios.RepositorioInscripcion import RepositorioInscripcion
 
 class ControladorInscripcion():
     def __init__(self):
         print("Creando ControladorInscripcion")
-
+        self.repositorioInscripcion = RepositorioInscripcion()
     def index(self):
         print("Listar todas las inscripciones")
-        unaInscripcion={"_id":"abc123",
-                        "año":"2022",
-                        "semestre":"4",
-                        "nota_final":"4.5"
-                        }
-        return [unaInscripcion]
-
+        return RepositorioInscripcion.findAll()
     def create(self,infoInscripcion):
         print("Crear una inscripcion")
-        laInscripcion = Inscripcion(infoInscripcion)
-        return laInscripcion.__dict__
-
+        nuevaInscripcion=Inscripcion(infoInscripcion)
+        return self.repositorioInscripcion.save(nuevaInscripcion)
     def show(self,id):
         print("Mostrando una inscripcion con id ",id)
-        laInscripcion = {"_id": id,
-                        "año":"2022",
-                        "semestre":"4",
-                        "nota_final":"4.5"
-                        }
-        return laInscripcion
-
+        laInscripcion=Inscripcion(self.repositorioInscripcion.findById(id))
+        return laInscripcion.__dict__
     def update(self,id,infoInscripcion):
         print("Actualizando inscripcion con id ",id)
-        laInscripcion = Inscripcion(infoInscripcion)
-        return laInscripcion.__dict__
-
+        inscripcionActual=Inscripcion(self.repositorioInscripcion.findById(id))
+        inscripcionActual.id=infoInscripcion["id"]
+        inscripcionActual.anio = infoInscripcion["año"]
+        inscripcionActual.semestre = infoInscripcion["semestre"]
+        inscripcionActual.nota_final = infoInscripcion["nota_final"]
+        return self.repositorioInscripcion.save(inscripcionActual)
     def delete(self,id):
         print("Elimiando inscripcion con id ",id)
-        return {"deleted_count":1}
+        return self.repositorioInscripcion.delete(id)
