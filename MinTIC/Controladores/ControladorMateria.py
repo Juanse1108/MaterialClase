@@ -1,3 +1,4 @@
+from Modelos.Departamento import Departamento
 from Repositorios.RepositorioMateria import RepositorioMateria
 from Modelos.Materia import Materia
 
@@ -26,3 +27,12 @@ class ControladorMateria():
     def delete(self,id):
         print("Elimiando materia con id ",id)
         return self.repositorioMateria.delete(id)
+
+    """
+    Relación departamento y materia (1 a n)
+    """
+    def asignarDepartamento(self, id, id_departamento):
+        materiaActual = Materia(self.repositorioMateria.findById(id))
+        departamentoActual = Departamento(self.repositorioDepartamento.findById(id_departamento))
+        materiaActual.departamento = departamentoActual
+        return self.repositorioMateria.save(materiaActual)
